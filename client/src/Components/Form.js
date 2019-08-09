@@ -1,9 +1,14 @@
 import React from 'react'
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
+import Axios from 'axios';
 
 
-const signupForm = ({ errors, touched, values, status }) => {
+
+const signupForm = ({ errors, touched,  }) => {
+
+   
+
     return (
         <div>
             <h1>SIGN IN</h1>
@@ -21,8 +26,8 @@ const signupForm = ({ errors, touched, values, status }) => {
                 <button type='submit'>Submit!</button>
             </Form>
         </div>
-    )
-}
+    );
+};
 
 //HOC
 const FormikForm = withFormik({
@@ -38,8 +43,14 @@ const FormikForm = withFormik({
         password: Yup.string().required('this field is required!')
     }),
 
-    handleSubmit(value, { setStatus, resetForm }) {
-
+    handleSubmit(values, { setStatus, resetForm }) {
+        Axios
+        .post('http://localhost:5000/api/register', values)
+        .then(res => {
+            alert(res.data.message);
+            resetForm();
+        })
+        .catch(err => console.log(err.response))
     }
 })(signupForm)
 
