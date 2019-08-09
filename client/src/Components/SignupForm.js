@@ -1,11 +1,20 @@
-import React from 'react'
+import React, {useState, useEffect} from 'react'
 import { Form, Field, withFormik } from 'formik';
 import * as Yup from 'yup';
 import Axios from 'axios';
 
 
 
-const signupForm = ({ errors, touched,  }) => {
+const SignupForm = ({ status, errors, touched,  }) => {
+    
+    const [users, setUsers] = useState([]);
+
+
+  useEffect(() => {
+    if (status) {
+      setUsers(users => [...users, status])
+    }
+  }, [status]);
 
    
 
@@ -27,7 +36,7 @@ const signupForm = ({ errors, touched,  }) => {
             </Form>
         </div>
     );
-};
+}
 
 //HOC
 const FormikForm = withFormik({
@@ -45,13 +54,18 @@ const FormikForm = withFormik({
 
     handleSubmit(values, { setStatus, resetForm }) {
         Axios
-        .post('http://localhost:5000/api/register', values)
-        .then(res => {
-            alert(res.data.message);
+          .post(`http://localhost:6000/api/register`, values)
+          .then(res => {
+            console.log(res.data);
+            setStatus(res.data);
             resetForm();
-        })
-        .catch(err => console.log(err.response))
-    }
-})(signupForm)
+          })
+          .catch(err =>  {
+            console.log("Registration error: ", err);
+          });
+      }
+    
+    
+    })(SignupForm);
 
 export default FormikForm
