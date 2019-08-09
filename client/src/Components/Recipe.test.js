@@ -6,7 +6,7 @@ import '@testing-library/react/cleanup-after-each'
 describe('<Recipes />', () => {
 
     describe('multiply()', () => {
-        it('shoudl multiply the two numbers', () => {
+        it('should multiply the two numbers', () => {
             expect(multiply(2,2)).toBe(4);
         })
     })
